@@ -1,0 +1,19 @@
+{
+    "production": {
+        "apigateway_enabled": false,
+        "app_function": "service.handler",
+        "aws_region": "us-east-1",
+        "events": [{
+          "function": "service.handler",
+          "expressions": ["rate(12 hours)"]
+        }],
+        "keep_warm": false,
+        "lambda_description": "scrapes nba roty data",
+        "manage_roles": false,
+        "profile_name": null,
+        "project_name": "nba-roty",
+        "role_name": "lambda_basic_execution",
+        "runtime": "python3.6",
+        "s3_bucket": "dmn-lambda-deploys"
+    }
+}

@@ -15,15 +15,18 @@ from fuzzywuzzy import process
 from operator import itemgetter
 
 
-SEASON = "2017-18"
-YEAR = "2018"
+SEASON = "2018-19"
+YEAR = "2019"
 
 time_ran = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
 # headers info for requesting from the nba api
-HEADERS = {'user-agent': ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'),
-       'referer': 'https://stats.nba.com/players/traditional/'
-      }
+HEADERS = {
+    'user-agent': ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'),
+    'referer': 'https://stats.nba.com/players/traditional/',
+    'accept-language': 'he-IL,he;q=0.8,en-US;q=0.6,en;q=0.4',
+    'cache-control': 'max-age=0'
+    }
 
 # base data dictionary. We'll iterate over the data from basketball-reference (BR)
 # and parse the data for players and stats and add it to this dictionary
@@ -141,8 +144,14 @@ def get_player_set(year):
             team_short = player[3]
 
         # creating the rookie dictionary
+
+        player_name = ''
+        if player[1] == 'Mo Bamba':
+            player_name = 'Mohamed Bamba'
+        else:
+            player_name = player[1]
         rookie = {
-            "player": player[1],
+            "player": player_name,
             "team": "", # this comes from basketball reference later
             "team_short": team_short,
             "wins": player[6],
@@ -247,9 +256,9 @@ def weed_players(players):
 
 def get_advance_metrics(players):
 
-    first_100 = requests.get("https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fplay-index%2Fpsl_finder.cgi%3Frequest%3D1%26match%3Dsingle%26type%3Dtotals%26per_minute_base%3D36%26per_poss_base%3D100%26season_start%3D1%26season_end%3D1%26lg_id%3DNBA%26age_min%3D0%26age_max%3D99%26is_playoffs%3DN%26height_min%3D0%26height_max%3D99%26year_min%3D2018%26year_max%3D2018%26birth_country_is%3DY%26as_comp%3Dgt%26as_val%3D0%26pos_is_g%3DY%26pos_is_gf%3DY%26pos_is_f%3DY%26pos_is_fg%3DY%26pos_is_fc%3DY%26pos_is_c%3DY%26pos_is_cf%3DY%26qual%3Dmp_per_g_req%26c1stat%3Dusg_pct%26c1comp%3Dgt%26c1val%3D0%26c2stat%3Dper%26c2comp%3Dgt%26c2val%3D-10%26c3stat%3Dws%26c3comp%3Dgt%26c3val%3D-10%26c4stat%3Dvorp%26c4comp%3Dgt%26c4val%3D-10%26c5val%3D.7%26order_by%3Dws&div=div_stats")
+    first_100 = requests.get("https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fplay-index%2Fpsl_finder.cgi%3Frequest%3D1%26match%3Dsingle%26type%3Dtotals%26per_minute_base%3D36%26per_poss_base%3D100%26season_start%3D1%26season_end%3D1%26lg_id%3DNBA%26age_min%3D0%26age_max%3D99%26is_playoffs%3DN%26height_min%3D0%26height_max%3D99%26year_min%3D2019%26year_max%3D2019%26birth_country_is%3DY%26as_comp%3Dgt%26as_val%3D0%26pos_is_g%3DY%26pos_is_gf%3DY%26pos_is_f%3DY%26pos_is_fg%3DY%26pos_is_fc%3DY%26pos_is_c%3DY%26pos_is_cf%3DY%26qual%3Dmp_per_g_req%26c1stat%3Dusg_pct%26c1comp%3Dgt%26c1val%3D0%26c2stat%3Dper%26c2comp%3Dgt%26c2val%3D-10%26c3stat%3Dws%26c3comp%3Dgt%26c3val%3D-10%26c4stat%3Dvorp%26c4comp%3Dgt%26c4val%3D-10%26c5val%3D.7%26order_by%3Dws&div=div_stats")
 
-    second_100 = requests.get("https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fplay-index%2Fpsl_finder.cgi%3Frequest%3D1%26match%3Dsingle%26type%3Dtotals%26per_minute_base%3D36%26per_poss_base%3D100%26season_start%3D1%26season_end%3D1%26lg_id%3DNBA%26age_min%3D0%26age_max%3D99%26is_playoffs%3DN%26height_min%3D0%26height_max%3D99%26year_min%3D2018%26year_max%3D2018%26birth_country_is%3DY%26as_comp%3Dgt%26as_val%3D0%26pos_is_g%3DY%26pos_is_gf%3DY%26pos_is_f%3DY%26pos_is_fg%3DY%26pos_is_fc%3DY%26pos_is_c%3DY%26pos_is_cf%3DY%26qual%3Dmp_per_g_req%26c1stat%3Dusg_pct%26c1comp%3Dgt%26c1val%3D0%26c2stat%3Dper%26c2comp%3Dgt%26c2val%3D-10%26c3stat%3Dws%26c3comp%3Dgt%26c3val%3D-10%26c4stat%3Dvorp%26c4comp%3Dgt%26c4val%3D-10%26c5val%3D.7%26order_by%3Dws&%3D%26offset%3D100&div=div_stats")
+    second_100 = requests.get("https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fplay-index%2Fpsl_finder.cgi%3Frequest%3D1%26match%3Dsingle%26type%3Dtotals%26per_minute_base%3D36%26per_poss_base%3D100%26season_start%3D1%26season_end%3D1%26lg_id%3DNBA%26age_min%3D0%26age_max%3D99%26is_playoffs%3DN%26height_min%3D0%26height_max%3D99%26year_min%3D2019%26year_max%3D2019%26birth_country_is%3DY%26as_comp%3Dgt%26as_val%3D0%26pos_is_g%3DY%26pos_is_gf%3DY%26pos_is_f%3DY%26pos_is_fg%3DY%26pos_is_fc%3DY%26pos_is_c%3DY%26pos_is_cf%3DY%26qual%3Dmp_per_g_req%26c1stat%3Dusg_pct%26c1comp%3Dgt%26c1val%3D0%26c2stat%3Dper%26c2comp%3Dgt%26c2val%3D-10%26c3stat%3Dws%26c3comp%3Dgt%26c3val%3D-10%26c4stat%3Dvorp%26c4comp%3Dgt%26c4val%3D-10%26c5val%3D.7%26order_by%3Dws&%3D%26offset%3D100&div=div_stats")
 
     first_100_content = BeautifulSoup(first_100.text, "html.parser")
     second_100_content = BeautifulSoup(second_100.text, "html.parser")

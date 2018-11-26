@@ -10,6 +10,7 @@ requests = "*"
 pip = "==9.0.2"
 "bs4" = "*"
 fuzzywuzzy = "*"
+python-levenshtein = "*"
 
 [dev-packages]
 
